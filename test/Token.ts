@@ -4,31 +4,29 @@ import { ethers } from "hardhat";
 import dotenv from "dotenv"
 dotenv.config()
 
-import {deployContract} from "../scripts/deployToken" 
+import {deployToken} from "../scripts/deployToken" 
 
-const getContract = () => loadFixture(deployContract);
+const getContract = () => loadFixture(deployToken);
 
-describe("Token", () => {
-    describe("Settings", function () {
-        it("Should set the NAME & SYMBOL", async () => {
-            const contract = await getContract();
+describe("Settings", function () {
+    it("Should set the NAME & SYMBOL", async () => {
+        const contract = await getContract();
 
-            const name = process.env.TOKEN_NAME
-            const symbol = process.env.TOKEN_SYMBOL
+        const name = process.env.TOKEN_NAME
+        const symbol = process.env.TOKEN_SYMBOL
 
-            expect(await contract.name()).to.equal(name);
-            expect(await contract.symbol()).to.equal(symbol);
-        });
+        expect(await contract.name()).to.equal(name);
+        expect(await contract.symbol()).to.equal(symbol);
+    });
 
-        it("Should mint 100 tokens to owner", async () => {
-            const contract = await getContract();
+    it("Should mint 100 tokens to owner", async () => {
+        const contract = await getContract();
 
-            const [owner] = await ethers.getSigners();
+        const [owner] = await ethers.getSigners();
 
-            expect(await contract.balanceOf(owner.getAddress())).to.equal(ethers.utils.parseEther("100"));
-        });
+        expect(await contract.balanceOf(owner.getAddress())).to.equal(ethers.utils.parseEther("100"));
+    });
 
-    })
 })
 
 describe("Ownable", () => {
@@ -48,6 +46,29 @@ describe("Ownable", () => {
         await contract.transferOwnership(addr)
 
         expect(await contract.owner()).to.equal(addr);
+    });
+})
+
+describe("Minting", () => {
+    it("Should mint tokens", async () => {
+        const contract = await getContract();
+
+        const [owner, addr1] = await ethers.getSigners();
+
+        await contract.mint(addr1.getAddress(), ethers.utils.parseEther("5"))
+
+        expect(await contract.balanceOf(addr1.getAddress())).to.equal(ethers.utils.parseEther("5"));
+    });
+
+    it("Should revert not owner minting", async () => {
+        const contract = await getContract();
+
+        const [owner, addr1] = await ethers.getSigners();
+        const addr = await addr1.getAddress()
+
+        await contract.transferOwnership(addr)
+
+        await expect(contract.mint(addr, 5)).to.be.revertedWith("Ownable: caller is not the owner");
     });
 })
 
@@ -78,7 +99,7 @@ describe("Governance Token", () => {
 
     it("Should quit delegation", async () => {
         const contract = await getContract();
-
+        
         const [owner, addr1] = await ethers.getSigners();
 
         const ownerAddr = await owner.getAddress()
