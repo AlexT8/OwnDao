@@ -10,17 +10,21 @@ contract Token is ERC20, Ownable, ERC20Permit, ERC20Votes{
 
     constructor(string memory _name, string memory _symbol)
     ERC20(_name, _symbol) ERC20Permit(_name) {
-        _mint(msg.sender,100 * 10**18);
+        _mint(msg.sender, 100 * 10**18);
     }
 
-    function mint(address to,uint256 amount)public onlyOwner{
-        _mint(to,amount);
+    function mint(address to, uint256 amount) public onlyOwner{
+        _mint(to, amount);
+    }
+
+    function burn(address account, uint256 amount) public onlyOwner{
+        _burn(account, amount);
     }
 
     // The following functions are overrides required by Solidity.
     function _afterTokenTransfer(address from, address to, uint256 amount)
         internal
-        override(ERC20,ERC20Votes)
+        override(ERC20, ERC20Votes)
     {
         super._afterTokenTransfer(from,to,amount);
     }
@@ -29,13 +33,13 @@ contract Token is ERC20, Ownable, ERC20Permit, ERC20Votes{
         internal
         override(ERC20,ERC20Votes)
     {
-        super._mint(to,amount);
+        super._mint(to, amount);
     }
    
     function _burn(address account, uint256 amount)
         internal
-        override(ERC20,ERC20Votes)
+        override(ERC20, ERC20Votes)
     {
-        super._burn(account,amount);
+        super._burn(account, amount);
     }
 }
