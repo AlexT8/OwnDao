@@ -9,12 +9,11 @@ export const deployToken = async () => {
   const Contract = await ethers.getContractFactory("Token");
   const token = await Contract.deploy(TOKEN_NAME, TOKEN_SYMBOL);
 
-  console.log("Token deployed to: " + token.address)
   return token.deployed();
 }
 
 async function main() {
-  await deployToken();
+  await deployToken()
 }
 
 main().catch((error) => {
