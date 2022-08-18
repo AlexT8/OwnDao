@@ -72,6 +72,29 @@ describe("Minting", () => {
     });
 })
 
+describe("Burning", () => {
+    it("Should burn tokens", async () => {
+        const contract = await getContract();
+
+        const [owner, addr1] = await ethers.getSigners();
+
+        await contract.burn(owner.getAddress(), ethers.utils.parseEther("5"))
+
+        expect(await contract.balanceOf(owner.getAddress())).to.equal(ethers.utils.parseEther("95"));
+    });
+
+    it("Should revert not owner burning", async () => {
+        const contract = await getContract();
+
+        const [owner, addr1] = await ethers.getSigners();
+        const addr = await addr1.getAddress()
+
+        await contract.transferOwnership(addr)
+
+        await expect(contract.burn(addr, 5)).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+})
+
 describe("Governance Token", () => {
     it("Should delegate", async () => {
         const contract = await getContract();
