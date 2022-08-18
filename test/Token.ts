@@ -53,7 +53,7 @@ describe("Minting", () => {
     it("Should mint tokens", async () => {
         const contract = await getContract();
 
-        const [owner, addr1] = await ethers.getSigners();
+        const [_owner, addr1] = await ethers.getSigners();
 
         await contract.mint(addr1.getAddress(), ethers.utils.parseEther("5"))
 
@@ -63,7 +63,7 @@ describe("Minting", () => {
     it("Should revert not owner minting", async () => {
         const contract = await getContract();
 
-        const [owner, addr1] = await ethers.getSigners();
+        const [_owner, addr1] = await ethers.getSigners();
         const addr = await addr1.getAddress()
 
         await contract.transferOwnership(addr)
@@ -76,7 +76,7 @@ describe("Burning", () => {
     it("Should burn tokens", async () => {
         const contract = await getContract();
 
-        const [owner, addr1] = await ethers.getSigners();
+        const [owner] = await ethers.getSigners();
 
         await contract.burn(owner.getAddress(), ethers.utils.parseEther("5"))
 
@@ -86,12 +86,34 @@ describe("Burning", () => {
     it("Should revert not owner burning", async () => {
         const contract = await getContract();
 
-        const [owner, addr1] = await ethers.getSigners();
+        const [_owner, addr1] = await ethers.getSigners();
         const addr = await addr1.getAddress()
 
         await contract.transferOwnership(addr)
 
         await expect(contract.burn(addr, 5)).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+})
+
+describe("Supply", () => {
+    it("Should increase supply", async () => {
+        const contract = await getContract();
+
+        const [_owner, addr1] = await ethers.getSigners();
+
+        await contract.mint(addr1.getAddress(), ethers.utils.parseEther("5"))
+
+        expect(await contract.totalSupply()).to.equal(ethers.utils.parseEther("105"));
+    });
+
+    it("Should decrease supply", async () => {
+        const contract = await getContract();
+
+        const [owner] = await ethers.getSigners();
+
+        await contract.burn(owner.getAddress(), ethers.utils.parseEther("18"))
+
+        expect(await contract.totalSupply()).to.equal(ethers.utils.parseEther("82"));
     });
 })
 
