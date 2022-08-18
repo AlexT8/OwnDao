@@ -6,22 +6,20 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFractio
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
 
-contract MyGovernor is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
+contract OwnDao is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
     constructor(IVotes _token)
-        Governor("MyGovernor")
+        Governor("OwnDao")
         GovernorVotes(_token)
         GovernorVotesQuorumFraction(4) // Quorum
         //GovernorTimelockControl(_timelock)
     {}
 
     function votingDelay() public pure override returns (uint256) {
-        //return 6575; // 1 day
-        return 0;
+        return 6575; // 1 day
     }
 
     function votingPeriod() public pure override returns (uint256) {
-        //return 46027; // 1 week
-        return 3;
+        return 46027; // 1 week
     }
 
     function proposalThreshold() public pure override returns (uint256) {
