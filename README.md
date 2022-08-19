@@ -1,13 +1,25 @@
-# Sample Hardhat Project
+# Create a Basic Own Dao
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This project initializes a Token to use with the Governor Contract (DAO).
+It has all the tests & configurations.
 
-Try running some of the following tasks:
+# To test:
 
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+**First create a .env file in the root of the project with the following:**
 ```
+TOKEN_NAME="YOUR_TOKEN_NAME"
+TOKEN_SYMBOL="YOUR_TOKEN_SYMBOL"
+CONTRACT_NAME="YOUR_CONTRACT_NAME"
+```
+> My example:
+```
+TOKEN_NAME="ALEXTAB"
+TOKEN_SYMBOL="AXT"
+
+CONTRACT_NAME="OwnDao"
+```
+
+Then run `npm i`
+When the installation is finished run:
+To test **Token** contract: `npx hardhat test test/Token.ts`
+To test **Governor** contract: `npx hardhat test test/Governor.ts`
