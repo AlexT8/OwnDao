@@ -171,5 +171,32 @@ describe("Proposals", function() {
                 )
             ).to.be.revertedWith('Governor: proposal not successful')
         })
+
+        it("Should not execute unknown proposal", async () => {
+            const {contract, token} = await getContract();
+            const [owner] = await ethers.getSigners()
+            const address = "0x70716FB8170529DA60C37E4855B89189Bb8f8605"
+
+            const {proposalId, options} = await createAProposal(contract, token)
+
+            
+            await token.delegate(await owner.getAddress())
+            await token.transferOwnership(contract.address)
+
+            await contract.castVote(proposalId, 1)
+
+            expect(await token.balanceOf(address)).to.be.equal(ethers.utils.parseEther("0"))
+            
+            const notSameDescription = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("Testing"))
+
+            await expect(
+                contract.execute(
+                    options.targets,
+                    options.value,
+                    options.calldata,
+                    notSameDescription
+                )
+            ).to.be.revertedWith("Governor: unknown proposal id")
+        })
     })
 })
