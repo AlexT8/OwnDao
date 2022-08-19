@@ -21,6 +21,6 @@ CONTRACT_NAME="OwnDao"
 **Make sure `CONTRACT_NAME` is equal to the contract name in the solidity file**
 
 Then run `npm i`
-When the installation is finished run:
-To test **Token** contract: `npx hardhat test test/Token.ts`
-To test **Governor** contract: `npx hardhat test test/Governor.ts`
+* When the installation is finished run:
+- To test **Token** contract: `npx hardhat test test/Token.ts`
+- To test **Governor** contract: `npx hardhat test test/Governor.ts`
