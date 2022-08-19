@@ -18,6 +18,7 @@ TOKEN_SYMBOL="AXT"
 
 CONTRACT_NAME="OwnDao"
 ```
+## Make sure `CONTRACT_NAME` is equal to the contract name in the solidity file
 
 Then run `npm i`
 When the installation is finished run:
