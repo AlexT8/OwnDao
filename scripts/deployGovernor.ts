@@ -6,9 +6,10 @@ import { deployToken } from "./deployToken";
 
 export const deployGovernor = async () => {
     const token = await deployToken()
-  
-    const Contract = await ethers.getContractFactory("OwnDao");
-    const governor = await Contract.deploy(token.address);
+    const name:string = process.env.CONTRACT_NAME || ""
+
+    const Contract = await ethers.getContractFactory(name);
+    const governor = await Contract.deploy(name, token.address);
 
     return {
       contract: await governor.deployed(),

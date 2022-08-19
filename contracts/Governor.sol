@@ -7,8 +7,8 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 
 contract OwnDao is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
-    constructor(IVotes _token)
-        Governor("OwnDao")
+    constructor(string memory _name, IVotes _token)
+        Governor(_name)
         GovernorVotes(_token)
         GovernorVotesQuorumFraction(4)
     {}
