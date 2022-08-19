@@ -14,11 +14,13 @@ contract OwnDao is Governor, GovernorCountingSimple, GovernorVotes, GovernorVote
     {}
 
     function votingDelay() public pure override returns (uint256) {
-        return 6545; // 1 day
+        // return 6545; // 1 day
+        return 1;
     }
 
     function votingPeriod() public pure override returns (uint256) {
-        return 45818; // 1 week
+        // return 45818; // 1 week
+        return 2;
     }
 
     // The following functions are overrides required by Solidity.
